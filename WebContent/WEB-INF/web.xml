@@ -9,4 +9,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>Mage_Test</display-name>
+    <servlet-name>Mage_Test</servlet-name>
+    <servlet-class>magelets.Mage_Test</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Mage_Test</servlet-name>
+    <url-pattern>/Mage_Test</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -92,7 +92,7 @@ public class Mage_Test_Executor {
 	    //String [] environment= null;
 	    Process p = pb.start();
 	    p.waitFor();
-	   // pb2.start();
+	    pb2.start();
 	    System.out.print("Mage Calculation Completed  ... ");
 	   
 	    String result = Mage_Test.read(servlet.getServletContext().getRealPath("/optMage/OUToligos.txt"));
