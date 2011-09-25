@@ -1,4 +1,4 @@
-package mage_utils;
+package magelets;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

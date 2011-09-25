@@ -19,4 +19,14 @@
     <servlet-name>Mage_Test</servlet-name>
     <url-pattern>/Mage_Test</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>optMAGE_1</display-name>
+    <servlet-name>optMAGE_1</servlet-name>
+    <servlet-class>magelets.optMAGE_1</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>optMAGE_1</servlet-name>
+    <url-pattern>/optMAGE_1</url-pattern>
+  </servlet-mapping>
 </web-app>
