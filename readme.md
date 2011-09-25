@@ -1,4 +1,4 @@
-Dynamic Web Project for the MAGIC
+Dynamic Web Project for the MAGE
 
 Contains the Servlets for running optMAGE Scripts - MAGELETS
 
