@@ -4,3 +4,11 @@ mloc_dft
 mloc_max
 addthiol
 calc_replic
+geneName
+sense
+replichore
+start
+end
+mutation
+targetSequence
+dnaSequence

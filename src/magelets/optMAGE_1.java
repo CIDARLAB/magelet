@@ -16,14 +16,15 @@ public class optMAGE_1 extends Magelet {
 	
 	private static final long serialVersionUID = 1L;
     
-	private static final String validHeaders = "/validate.txt";
-    private static final String inputParameterHeaders = "/headers.txt";
+	private static final String validHeaders = "validate.txt";
+    private static final String inputParameterHeaders = "inputParameterHeaders.txt";
     private static final String script = "optMAGEv0.9.pl";
-    private static final String oligoFile = "/OUToligos.txt";
-    private static final String dumpFile = "/OUTdump.txt";
-    private static final String inputParameterFileName = "/INPUTparam.txt";
+    private static final String oligoFile = "OUToligos.txt";
+    private static final String dumpFile = "OUTalldump.txt";
+    private static final String inputParameterFileName = "INPUTparam.txt";
     private static final String servletFolder ="/optMage_1/";
-    
+    private static final String inputTargetHeaders = "inputTargetHeaders.txt";   
+    private static final String inputTargetFileName = "INPUTtarg.txt";
     
     /**
      * @see Magelet#Magelet()
@@ -43,16 +44,20 @@ public class optMAGE_1 extends Magelet {
 		PrintWriter out = response.getWriter();
 		
 		// Get Servlet Directory
-		String directory = getDirectory(servletFolder);
+		String directory = getDirectory(servletFolder) + "/";
 		System.out.println("POST Received");
 		
 		// Load and validate parameters
 		Map<String,String[]> parameters = load(request);
+		
+		//System.out.println("Start Array = " + parameters.get("start").length);
+		
 		try{
 			if (validate(directory+validHeaders,parameters)) {
 				
 				// Generate the inputParameterFile
-				generate(directory, inputParameterHeaders, parameters, inputParameterFileName);
+				generate(directory, inputParameterHeaders, parameters, inputParameterFileName, true);
+				generate(directory, inputTargetHeaders, parameters, inputTargetFileName, false);
 				
 				// Execute the optMAGE script
 				execute(directory, script);

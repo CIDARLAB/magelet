@@ -127,11 +127,13 @@ public abstract class Magelet extends HttpServlet {
 		return result;
 	}	
 	
-	protected void generate(String directory, String inputFileName, Map<String, String[]> parameters, String outputFileName) throws IOException{
+	protected void generate(String directory, String inputFileName, Map<String, String[]> parameters, String outputFileName, boolean isSingle) throws IOException{
 		
 		// Get the headers as a String Array
 		String[] headers = TextFile.getLinesAsArray(directory+inputFileName) ;
-		Integer length = Integer.parseInt(parameters.get(MageEditor.mutationCount)[0]);
+		Integer length;
+		if (isSingle){ length = 1; }
+		else { length = Integer.parseInt(parameters.get(MageEditor.mutationCount)[0]); }
 		
 		// Intialize the strigns for concatentation
 		String header= "";
@@ -142,11 +144,15 @@ public abstract class Magelet extends HttpServlet {
 		for (int ii=0; ii<length; ii++){ lines[ii] = "";}
 		
 		// Get all the values from the parameters map and format them properly
+		//int record=0;
 		for( String hh: headers){
 			header += hh+"	";
-			for (int ii = 0; ii<length ;ii++ ){
+			for (int ii= 0; ii<length ;ii++ ){
 				lines[ii] += parameters.get(hh)[ii]+"	";
+				System.out.println("DEBUG " +lines[ii]);
 			}
+			//System.out.print(Arrays.toString(lines));
+		//	record++;
 		}
 		
 		// Remove the last tabs
