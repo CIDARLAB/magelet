@@ -51,6 +51,10 @@ public abstract class Magelet extends HttpServlet {
 	}
 
 
+	/**
+	 *  Prints all the Post Parameters Key and Value Pairs
+	 * @param parameters Map of POST parameters 
+	 */
 	protected void printPostParameter(Map<String,String[]> parameters){
 		for (Entry<String, String[]> entry : parameters.entrySet())
 		{
@@ -122,11 +126,21 @@ public abstract class Magelet extends HttpServlet {
 	    Process p = pb.start();
 	    p.waitFor();
 	    pb2.start();
-	    System.out.print("Mage Calculation Completed  ... ");
+	    System.out.println("Mage Calculation Completed  ... ");
 
 		return result;
 	}	
 	
+	/**
+	 * This method will generate a given input file with with specificied input arguments....
+	 * 
+	 * @param directory		The given directory of the input and output file
+	 * @param inputFileName	File with headers
+	 * @param parameters	Map of POST parameters
+	 * @param outputFileName File for output to be used by the PERL optMAGE
+	 * @param isSingle		If this all the parameters are single (i.e no Array)
+	 * @throws IOException
+	 */
 	protected void generate(String directory, String inputFileName, Map<String, String[]> parameters, String outputFileName, boolean isSingle) throws IOException{
 		
 		// Get the headers as a String Array
@@ -149,7 +163,7 @@ public abstract class Magelet extends HttpServlet {
 			header += hh+"	";
 			for (int ii= 0; ii<length ;ii++ ){
 				lines[ii] += parameters.get(hh)[ii]+"	";
-				System.out.println("DEBUG " +lines[ii]);
+				//System.out.println("DEBUG " +lines[ii]);
 			}
 			//System.out.print(Arrays.toString(lines));
 		//	record++;
@@ -168,21 +182,6 @@ public abstract class Magelet extends HttpServlet {
 		TextFile.write(directory, outputFileName, header+"\n"+params);
 	}
 	
-/*	protected void genINTPUTTARGETS(String directory, String inputFileName, Map<String, String[]> parameters, String outputFileName){
-		String print_header = "Gene Name	Sense	Replicore	LP	RP	Mutation	Sequence\n";
-		
-		String start = parameters.get("start")[0];
-		String end = parameters.get("end")[0];
-		String mutation = parameters.get("mutation")[0];
-		String mutationSequence = parameters.get("mutatedSequence")[0];
-		
-		String print_parameters = "pps	-	2	"+start+"\t"+end+"\t"+mutation+"\t"+mutationSequence+"\n";
-		System.out.println(print_parameters);
-		
-		TextFile.write(directory, inputFileName, print_header +"\n" + print_parameters); 
-	}
-*/	
-	
 	/**
 	 * Method for generating and printing a FASTA file from a given DNA sequence.
 	 * 
@@ -195,6 +194,5 @@ public abstract class Magelet extends HttpServlet {
 		String fasta = ">\n"+dnaSequence+"\n";		
 		TextFile.write(directory, outputFileName, fasta);
 	}
-
 	
 }

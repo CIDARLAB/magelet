@@ -25,6 +25,7 @@ public class optMAGE_1 extends Magelet {
     private static final String servletFolder ="/optMage_1/";
     private static final String inputTargetHeaders = "inputTargetHeaders.txt";   
     private static final String inputTargetFileName = "INPUTtarg.txt";
+    private static final String genomeFileName = "genome.fasta";
     
     /**
      * @see Magelet#Magelet()
@@ -58,6 +59,7 @@ public class optMAGE_1 extends Magelet {
 				// Generate the inputParameterFile
 				generate(directory, inputParameterHeaders, parameters, inputParameterFileName, true);
 				generate(directory, inputTargetHeaders, parameters, inputTargetFileName, false);
+				generateFASTA(directory, genomeFileName,  parameters.get(MageEditor.dnaSequence)[0] );
 				
 				// Execute the optMAGE script
 				execute(directory, script);
@@ -69,7 +71,9 @@ public class optMAGE_1 extends Magelet {
 			    // Delete the files we just created
 			    TextFile.delete(directory+dumpFile);
 			    TextFile.delete(directory+oligoFile);
-			    TextFile.delete(directory+inputParameterFileName);
+			    TextFile.delete(directory+genomeFileName);
+			    //TextFile.delete(directory+inputTargetFileName);
+			    //TextFile.delete(directory+inputParameterFileName);
 			}
 			else { this.result = "Invalid Request Parameters"; }
 		}
