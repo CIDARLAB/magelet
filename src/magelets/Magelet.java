@@ -3,9 +3,12 @@ package magelets;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
@@ -25,9 +28,12 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class Magelet extends HttpServlet {
 
 	protected String result="";
+	protected HashMap<String, String[]> map;
+	
 	// Constructor
 	public Magelet(){
 		super();
+		map =  new HashMap<String, String[]>();
 	}
 	
 	/**
@@ -120,12 +126,12 @@ public abstract class Magelet extends HttpServlet {
 	protected String execute(String directory, String scriptName) throws IOException, InterruptedException {
 		// Create a process builder to execute perl scripts
 	    ProcessBuilder pb = new ProcessBuilder("perl",scriptName);
-	    ProcessBuilder pb2 = new ProcessBuilder("open",directory);
+	    //ProcessBuilder pb2 = new ProcessBuilder("open",directory);
 	    pb.directory(new File(directory));
 	    
 	    Process p = pb.start();
 	    p.waitFor();
-	    pb2.start();
+	    //pb2.start();
 	    System.out.println("Mage Calculation Completed  ... ");
 
 		return result;
@@ -141,45 +147,10 @@ public abstract class Magelet extends HttpServlet {
 	 * @param isSingle		If this all the parameters are single (i.e no Array)
 	 * @throws IOException
 	 */
-	protected void generate(String directory, String inputFileName, Map<String, String[]> parameters, String outputFileName, boolean isSingle) throws IOException{
-		
-		// Get the headers as a String Array
-		String[] headers = TextFile.getLinesAsArray(directory+inputFileName) ;
-		Integer length;
-		if (isSingle){ length = 1; }
-		else { length = Integer.parseInt(parameters.get(MageEditor.mutationCount)[0]); }
-		
-		// Intialize the strigns for concatentation
-		String header= "";
-		String params= "";
-		String [] lines= new String[length]; 
-		
-		// Initialize lines
-		for (int ii=0; ii<length; ii++){ lines[ii] = "";}
-		
-		// Get all the values from the parameters map and format them properly
-		//int record=0;
-		for( String hh: headers){
-			header += hh+"	";
-			for (int ii= 0; ii<length ;ii++ ){
-				lines[ii] += parameters.get(hh)[ii]+"	";
-				//System.out.println("DEBUG " +lines[ii]);
-			}
-			//System.out.print(Arrays.toString(lines));
-		//	record++;
-		}
-		
-		// Remove the last tabs
-		header = header.substring(0, header.length()-1);
-		
-		// Assemble the parameter array into a single properly formated string
-		for (String line: lines){
-			line = line.substring(0, line.length()-1);
-			params += line+"\n";
-		}
-		
-		// Return the parameter file
-		TextFile.write(directory, outputFileName, header+"\n"+params);
+	protected void generate(String directory, String outputFileName, String parameterKey, Map<String, String[]> parameters) throws IOException{
+			
+			//Print out the parameter
+			TextFile.write(directory, outputFileName, parameters.get(parameterKey)[0]);
 	}
 	
 	/**
@@ -191,8 +162,30 @@ public abstract class Magelet extends HttpServlet {
 	 * @throws IOException
 	 */
 	protected void generateFASTA(String directory, String outputFileName, String dnaSequence) throws IOException{
-		String fasta = ">\n"+dnaSequence+"\n";		
+		String fasta = ">\n"+dnaSequence+"\n";
 		TextFile.write(directory, outputFileName, fasta);
 	}
 	
+	
+	// Creates an application/x-www-form-urlencoded String for a response
+	protected String buildURLfromMap  () throws UnsupportedEncodingException
+	{
+		StringBuilder sb =  new StringBuilder();
+		
+		for (Map.Entry<String, String[]> entry : this.map.entrySet())
+		{
+			sb.append( URLEncoder.encode(entry.getKey(),"UTF-8") );
+			sb.append("=");
+			String value = "";
+			for ( String ss : entry.getValue()) { value+= (ss+"\n");}
+			sb.append(value);
+			sb.append("&");
+		}
+		
+		// Remove the last character
+		sb.deleteCharAt(sb.length()-1);
+		
+		// return the string
+		return sb.toString();
+	}
 }

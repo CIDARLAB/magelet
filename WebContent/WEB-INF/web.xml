@@ -29,4 +29,14 @@
     <servlet-name>optMAGE_1</servlet-name>
     <url-pattern>/optMAGE_1</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>Runs the Merlin Optimization Tool</description>
+    <display-name>Merlin</display-name>
+    <servlet-name>Merlin</servlet-name>
+    <servlet-class>Merlin</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Merlin</servlet-name>
+    <url-pattern>/Merlin</url-pattern>
+  </servlet-mapping>
 </web-app>

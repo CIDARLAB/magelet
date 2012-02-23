@@ -1,4 +1,4 @@
-package magelets;
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,80 +9,81 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import magelets.MageEditor;
+import magelets.Magelet;
 
 /**
- * Servlet implementation class optMAGE_1
+ * Servlet implementation class Merlin
  */
-public class optMAGE_1 extends Magelet {
+public final class Merlin extends Magelet {
 	
 	private static final long serialVersionUID = 1L;
     
 	private static final String validHeaders = "validate.txt";
     private static final String inputParameterHeaders = "inputParameterHeaders.txt";
-    private static final String script = "optMAGEv0.9.pl";
-    private static final String oligoFile = "OUToligos.txt";
-    private static final String dumpFile = "OUTalldump.txt";
     private static final String inputParameterFileName = "INPUTparam.txt";
     private static final String servletFolder ="/optMage_1/";
     private static final String inputTargetHeaders = "inputTargetHeaders.txt";   
     private static final String inputTargetFileName = "INPUTtarg.txt";
-    private static final String genomeFileName = "genome.fasta";    
-    private static final String parameterKey = "parameters";
-    private static final String targetKey = "targets";
+    private static final String genomeFileName = "genome.fasta";   
+    
+    
     /**
      * @see Magelet#Magelet()
      */
-    public optMAGE_1() {
+    public Merlin() {
         super();
-        
+        // TODO Auto-generated constructor stub
     }
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// Set response type and create an output printer
-		response.setContentType("application/x-www-form-urlencoded");
-		PrintWriter out = response.getWriter();
 
+		// Set response type and create an output printer
+		response.setContentType("text");
+		PrintWriter out = response.getWriter();
+		
 		// Get Servlet Directory
 		String directory = getDirectory(servletFolder) + "/";
 		System.out.println("POST Received");
 		
 		// Load and validate parameters
 		Map<String,String[]> parameters = load(request);
-				
+		
+		//System.out.println("Start Array = " + parameters.get("start").length);
+		
 		try{
 			if (validate(directory+validHeaders,parameters)) {
 				
-				// Generate the inputParameterFile and inputTargetFile and write those to file system
-				generate(directory, inputParameterFileName, parameterKey, parameters );
-				generate(directory, inputTargetFileName, targetKey, parameters );
+				// Generate the inputParameterFile
+				generate(directory, inputParameterHeaders, parameters, inputParameterFileName, true);
+				generate(directory, inputTargetHeaders, parameters, inputTargetFileName, false);
+				generateFASTA(directory, genomeFileName,  parameters.get(MageEditor.dnaSequence)[0] );
 				
-				// Something related to the genome would go here
+				// Create a New Instance of Merlin
+				mage.Core.Merlin merlin = new mage.Core.Merlin(directory, inputParameterFileName, inputParameterFileName);
 				
-				// Execute the optMAGE script
-				execute(directory, script);
+				// Enable Plotting
+                mage.Core.Merlin.plot = true;
+				
+				// Enable Switches
+				mage.Switches.Blast.method = 2;
+				
+				// Run the optimization
+				merlin.optimize();
 				
 				// Read the MAGE results;
-			    this.map.put( "result", TextFile.getLinesAsArray(directory+oligoFile ));
-			    this.result = this.buildURLfromMap();
+			    this.result= "MERLIN!";
+			    System.out.println(result);
 			    
-			    // Delete the files we just created
-			    TextFile.delete(directory+oligoFile);
-			    TextFile.delete(directory+dumpFile);
-			    // Something about renaming the genome file would go here.
-			    TextFile.delete(directory+inputTargetFileName);
-			    TextFile.delete(directory+inputParameterFileName);
 			}
-			//else { this.result = "Invalid Request Parameters"; }
+			else { this.result = "Invalid Request Parameters"; }
 		}
-		catch (Exception EE){ 
-			EE.printStackTrace();
-			this.map.put("error", new String[] {EE.getStackTrace().toString()});
-			this.result = this.buildURLfromMap();
-		}
+		catch (Exception EE){ EE.printStackTrace();}
 		finally{
 			
 			// Print to console and return the results
