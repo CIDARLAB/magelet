@@ -82,7 +82,7 @@ public class optMAGE_1 extends Magelet {
 		catch (Exception EE){ 
 			EE.printStackTrace();
 			this.map.remove(MageEditor.ERROR);
-			this.map.put(MageEditor.ERROR, new String[] {EE.getStackTrace().toString()});
+			this.map.put(MageEditor.ERROR, new String[] {EE.toString()});
 			this.result = this.buildURLfromMap();
 		}
 		finally{

@@ -10,6 +10,7 @@ public final class MageEditor {
     public static final String RESULT = "result";
     public static final String ERROR = "error";
     public static final String GENBANK = "genbank";
+	public static final String NAMES = "names";
     
     
 	//public final static String

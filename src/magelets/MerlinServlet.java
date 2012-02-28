@@ -82,11 +82,15 @@ public final class MerlinServlet extends Magelet {
 				List<String> gbList = merlin.generateGenbank();
 
 				String[] genbanks = gbList.toArray( new String[gbList.size()]);
+				
+				List<String> nameList = merlin.generateNames();
+				String[] names = nameList.toArray( new String[nameList.size()]);
 
 				// Add the genbank array to the response
 				map.put(MageEditor.GENBANK, genbanks);
-
-
+				map.put(MageEditor.NAMES, names);
+				
+				
 			    // Something about renaming the genome file would go here.
 			    TextFile.delete(directory+inputTargetFileName);
 			    TextFile.delete(directory+inputParameterFileName);
