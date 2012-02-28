@@ -30,13 +30,13 @@
     <url-pattern>/optMAGE_1</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description>Runs the Merlin Optimization Tool</description>
-    <display-name>Merlin</display-name>
-    <servlet-name>Merlin</servlet-name>
-    <servlet-class>Merlin</servlet-class>
+    <description>Merlin Servlet</description>
+    <display-name>merlin</display-name>
+    <servlet-name>merlin</servlet-name>
+    <servlet-class>magelets.MerlinServlet</servlet-class>
   </servlet>
   <servlet-mapping>
-    <servlet-name>Merlin</servlet-name>
-    <url-pattern>/Merlin</url-pattern>
+    <servlet-name>merlin</servlet-name>
+    <url-pattern>/merlin</url-pattern>
   </servlet-mapping>
 </web-app>

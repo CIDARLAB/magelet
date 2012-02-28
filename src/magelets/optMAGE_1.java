@@ -18,17 +18,13 @@ public class optMAGE_1 extends Magelet {
 	private static final long serialVersionUID = 1L;
     
 	private static final String validHeaders = "validate.txt";
-    private static final String inputParameterHeaders = "inputParameterHeaders.txt";
     private static final String script = "optMAGEv0.9.pl";
     private static final String oligoFile = "OUToligos.txt";
     private static final String dumpFile = "OUTalldump.txt";
     private static final String inputParameterFileName = "INPUTparam.txt";
     private static final String servletFolder ="/optMage_1/";
-    private static final String inputTargetHeaders = "inputTargetHeaders.txt";   
-    private static final String inputTargetFileName = "INPUTtarg.txt";
-    private static final String genomeFileName = "genome.fasta";    
-    private static final String parameterKey = "parameters";
-    private static final String targetKey = "targets";
+    private static final String inputTargetFileName = "INPUTtarg.txt"; 
+
     /**
      * @see Magelet#Magelet()
      */
@@ -56,9 +52,14 @@ public class optMAGE_1 extends Magelet {
 		try{
 			if (validate(directory+validHeaders,parameters)) {
 				
+				TextFile.deleteIfPossible(directory+oligoFile);
+				TextFile.deleteIfPossible(directory+dumpFile);
+			    TextFile.deleteIfPossible(directory+inputTargetFileName);
+			    TextFile.deleteIfPossible(directory+inputParameterFileName);
+				
 				// Generate the inputParameterFile and inputTargetFile and write those to file system
-				generate(directory, inputParameterFileName, parameterKey, parameters );
-				generate(directory, inputTargetFileName, targetKey, parameters );
+				generate(directory, inputParameterFileName, MageEditor.PARAMETER, parameters );
+				generate(directory, inputTargetFileName, MageEditor.TARGET, parameters );
 				
 				// Something related to the genome would go here
 				
@@ -66,21 +67,22 @@ public class optMAGE_1 extends Magelet {
 				execute(directory, script);
 				
 				// Read the MAGE results;
-			    this.map.put( "result", TextFile.getLinesAsArray(directory+oligoFile ));
+			    this.map.put( MageEditor.RESULT, TextFile.getLinesAsArray(directory+oligoFile ));
 			    this.result = this.buildURLfromMap();
 			    
 			    // Delete the files we just created
-			    TextFile.delete(directory+oligoFile);
-			    TextFile.delete(directory+dumpFile);
+			    //TextFile.delete(directory+oligoFile);
+			    TextFile.deleteIfPossible(directory+dumpFile);
 			    // Something about renaming the genome file would go here.
-			    TextFile.delete(directory+inputTargetFileName);
-			    TextFile.delete(directory+inputParameterFileName);
+			    //TextFile.delete(directory+inputTargetFileName);
+			    //TextFile.delete(directory+inputParameterFileName);
 			}
 			//else { this.result = "Invalid Request Parameters"; }
 		}
 		catch (Exception EE){ 
 			EE.printStackTrace();
-			this.map.put("error", new String[] {EE.getStackTrace().toString()});
+			this.map.remove(MageEditor.ERROR);
+			this.map.put(MageEditor.ERROR, new String[] {EE.getStackTrace().toString()});
 			this.result = this.buildURLfromMap();
 		}
 		finally{

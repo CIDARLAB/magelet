@@ -33,7 +33,8 @@ public abstract class Magelet extends HttpServlet {
 	// Constructor
 	public Magelet(){
 		super();
-		map =  new HashMap<String, String[]>();
+		this.map =  new HashMap<String, String[]>();
+		this.map.put(MageEditor.ERROR,new String [] {"Default Error!"});
 	}
 	
 	/**
@@ -174,11 +175,12 @@ public abstract class Magelet extends HttpServlet {
 		
 		for (Map.Entry<String, String[]> entry : this.map.entrySet())
 		{
-			sb.append( URLEncoder.encode(entry.getKey(),"UTF-8") );
+			
+			sb.append(  URLEncoder.encode(entry.getKey(), "ISO-8859-1") ); // URLEncoder.encode(entry.getKey(),"ISO-8859-1")
 			sb.append("=");
-			String value = "";
-			for ( String ss : entry.getValue()) { value+= (ss+"\n");}
-			sb.append(value);
+			StringBuilder array = new StringBuilder();
+			for ( String ss : entry.getValue()) { array.append( URLEncoder.encode(ss, "ISO-8859-1") +MageEditor.DELIMITER);}
+			sb.append(array.toString());
 			sb.append("&");
 		}
 		
