@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mage.Editor.PlotData;
+
 /**
  * Servlet implementation class Merlin
  */
@@ -90,6 +92,9 @@ public final class MerlinServlet extends Magelet {
 				map.put(MageEditor.GENBANK, genbanks);
 				map.put(MageEditor.NAMES, names);
 				
+				// Generate the plot data
+				List<PlotData> plotList= merlin.generatePlotData();
+				addPlots(plotList);
 				
 			    // Something about renaming the genome file would go here.
 			    TextFile.delete(directory+inputTargetFileName);
@@ -120,6 +125,33 @@ public final class MerlinServlet extends Magelet {
 			// Close the output Stream.
 			out.close();
 		}
-
+	}
+	
+	private void addPlots(List<PlotData> list)
+	{
+		String [] freeEnergy = new String[list.size()];
+		String [] blastGenome = new String[list.size()];
+		String [] blastOligo = new String[list.size()];
+		String [] optMagePosition = new String[list.size()];
+		String [] merlinPosition = new String[list.size()];
+		
+		
+		// Populate arrays with the plot data values
+		for ( int ii = 0; ii < list.size() ;ii++ )
+		{
+			freeEnergy[ii] = list.get(ii).getFreeEnergy();
+			blastOligo[ii] = list.get(ii).getBlastOligo();
+			blastGenome[ii] =list.get(ii).getBlastGenome();
+			merlinPosition[ii] = list.get(ii).getMerlin();
+			optMagePosition[ii] = list.get(ii).getOptMage();
+		}
+		
+		// Add the string [] to the map
+		map.put(MageEditor.FREE_ENERGY, freeEnergy);
+		map.put(MageEditor.BLAST_GENOME, blastGenome);
+		map.put(MageEditor.BLAST_OLIGO, blastOligo);
+		map.put(MageEditor.MERLIN_POSITION, merlinPosition);
+		map.put(MageEditor.OPTMAGE_POSITION, optMagePosition);
+		
 	}
 }
