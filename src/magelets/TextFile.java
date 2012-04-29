@@ -61,6 +61,15 @@ public class TextFile{
 	}
 	
 	/**
+	 * Attempts to delete a file if the file exists
+	 * @param filePath	A String containing the name of the desired file to be deleted
+	 */
+	public static void deleteIfPossible( String filePath) {
+		 File ff = new File(filePath);
+		 ff.delete();
+	}
+	
+	/**
 	 * A function that returns all the lines in a file in an array of type string
 	 * 
 	 * @param filePath		The filePath of the desired text file (directory+name)

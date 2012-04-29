@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="mage_utils/TextFile.java" kind="src" path="src"/>
+	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 6 (MacOS X Default)">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
@@ -13,5 +14,10 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="lib/biojava3-alignment-3.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/biojava3-core-3.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/biojava3-genome-3.0.2.jar"/>
+	<classpathentry kind="lib" path="lib/JavaPlot.jar"/>
+	<classpathentry kind="lib" path="lib/merlin.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

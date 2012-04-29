@@ -1,0 +1,7 @@
+geneName
+sense
+replichore
+start
+end
+mutation
+targetSequence

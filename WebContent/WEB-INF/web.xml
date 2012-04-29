@@ -29,4 +29,14 @@
     <servlet-name>optMAGE_1</servlet-name>
     <url-pattern>/optMAGE_1</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description>Merlin Servlet</description>
+    <display-name>merlin</display-name>
+    <servlet-name>merlin</servlet-name>
+    <servlet-class>magelets.MerlinServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>merlin</servlet-name>
+    <url-pattern>/merlin</url-pattern>
+  </servlet-mapping>
 </web-app>

@@ -3,9 +3,12 @@ package magelets;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
@@ -25,9 +28,13 @@ import javax.servlet.http.HttpServletResponse;
 public abstract class Magelet extends HttpServlet {
 
 	protected String result="";
+	protected HashMap<String, String[]> map;
+	
 	// Constructor
 	public Magelet(){
 		super();
+		this.map =  new HashMap<String, String[]>();
+		this.map.put(MageEditor.ERROR,new String [] {"Default Error!"});
 	}
 	
 	/**
@@ -51,6 +58,10 @@ public abstract class Magelet extends HttpServlet {
 	}
 
 
+	/**
+	 *  Prints all the Post Parameters Key and Value Pairs
+	 * @param parameters Map of POST parameters 
+	 */
 	protected void printPostParameter(Map<String,String[]> parameters){
 		for (Entry<String, String[]> entry : parameters.entrySet())
 		{
@@ -116,66 +127,32 @@ public abstract class Magelet extends HttpServlet {
 	protected String execute(String directory, String scriptName) throws IOException, InterruptedException {
 		// Create a process builder to execute perl scripts
 	    ProcessBuilder pb = new ProcessBuilder("perl",scriptName);
-	    ProcessBuilder pb2 = new ProcessBuilder("open",directory);
+	    //ProcessBuilder pb2 = new ProcessBuilder("open",directory);
 	    pb.directory(new File(directory));
 	    
 	    Process p = pb.start();
 	    p.waitFor();
-	    pb2.start();
-	    System.out.print("Mage Calculation Completed  ... ");
+	    //pb2.start();
+	    System.out.println("Mage Calculation Completed  ... ");
 
 		return result;
 	}	
 	
-	protected void generate(String directory, String inputFileName, Map<String, String[]> parameters, String outputFileName) throws IOException{
-		
-		// Get the headers as a String Array
-		String[] headers = TextFile.getLinesAsArray(directory+inputFileName) ;
-		Integer length = Integer.parseInt(parameters.get(MageEditor.mutationCount)[0]);
-		
-		// Intialize the strigns for concatentation
-		String header= "";
-		String params= "";
-		String [] lines= new String[length]; 
-		
-		// Initialize lines
-		for (int ii=0; ii<length; ii++){ lines[ii] = "";}
-		
-		// Get all the values from the parameters map and format them properly
-		for( String hh: headers){
-			header += hh+"	";
-			for (int ii = 0; ii<length ;ii++ ){
-				lines[ii] += parameters.get(hh)[ii]+"	";
-			}
-		}
-		
-		// Remove the last tabs
-		header = header.substring(0, header.length()-1);
-		
-		// Assemble the parameter array into a single properly formated string
-		for (String line: lines){
-			line = line.substring(0, line.length()-1);
-			params += line+"\n";
-		}
-		
-		// Return the parameter file
-		TextFile.write(directory, outputFileName, header+"\n"+params);
+	/**
+	 * This method will generate a given input file with with specificied input arguments....
+	 * 
+	 * @param directory		The given directory of the input and output file
+	 * @param inputFileName	File with headers
+	 * @param parameters	Map of POST parameters
+	 * @param outputFileName File for output to be used by the PERL optMAGE
+	 * @param isSingle		If this all the parameters are single (i.e no Array)
+	 * @throws IOException
+	 */
+	protected void generate(String directory, String outputFileName, String parameterKey, Map<String, String[]> parameters) throws IOException{
+			
+			//Print out the parameter
+			TextFile.write(directory, outputFileName, parameters.get(parameterKey)[0]);
 	}
-	
-/*	protected void genINTPUTTARGETS(String directory, String inputFileName, Map<String, String[]> parameters, String outputFileName){
-		String print_header = "Gene Name	Sense	Replicore	LP	RP	Mutation	Sequence\n";
-		
-		String start = parameters.get("start")[0];
-		String end = parameters.get("end")[0];
-		String mutation = parameters.get("mutation")[0];
-		String mutationSequence = parameters.get("mutatedSequence")[0];
-		
-		String print_parameters = "pps	-	2	"+start+"\t"+end+"\t"+mutation+"\t"+mutationSequence+"\n";
-		System.out.println(print_parameters);
-		
-		TextFile.write(directory, inputFileName, print_header +"\n" + print_parameters); 
-	}
-*/	
 	
 	/**
 	 * Method for generating and printing a FASTA file from a given DNA sequence.
@@ -186,9 +163,31 @@ public abstract class Magelet extends HttpServlet {
 	 * @throws IOException
 	 */
 	protected void generateFASTA(String directory, String outputFileName, String dnaSequence) throws IOException{
-		String fasta = ">\n"+dnaSequence+"\n";		
+		String fasta = ">\n"+dnaSequence+"\n";
 		TextFile.write(directory, outputFileName, fasta);
 	}
-
 	
+	
+	// Creates an application/x-www-form-urlencoded String for a response
+	protected String buildURLfromMap  () throws UnsupportedEncodingException
+	{
+		StringBuilder sb =  new StringBuilder();
+		
+		for (Map.Entry<String, String[]> entry : this.map.entrySet())
+		{
+			
+			sb.append(  URLEncoder.encode(entry.getKey(), "ISO-8859-1") ); // URLEncoder.encode(entry.getKey(),"ISO-8859-1")
+			sb.append("=");
+			StringBuilder array = new StringBuilder();
+			for ( String ss : entry.getValue()) { array.append( URLEncoder.encode(ss, "ISO-8859-1") +MageEditor.DELIMITER);}
+			sb.append(array.toString());
+			sb.append("&");
+		}
+		
+		// Remove the last character
+		sb.deleteCharAt(sb.length()-1);
+		
+		// return the string
+		return sb.toString();
+	}
 }
