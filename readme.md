@@ -1,9 +1,14 @@
-Dynamic Web Project for the MAGIC
+# Merlin Java Servlet for Tomcat
 
-Contains the Servlets for running optMAGE Scripts - MAGELETS
+## How it works
 
-optMAGE Scripts developed by Harris Wang at Harvard Wyss Institute
+The servlets list for specific URL patterns and either run optMAGE or Javamage
 
-Magelet created by Samir Ahmed at Boston University CIDAR Laboratory
+This directory may be packaged as WAR file and places in the `/webapps` folder of a Tomcat sever to run
 
-Created Working Branch
+> optMAGE Scripts developed by Harris Wang at Harvard Wyss Institute
+
+`CIDAR LAB 2012 - Samir Ahmed`
+
+
+
