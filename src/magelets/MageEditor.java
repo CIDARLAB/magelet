@@ -16,6 +16,8 @@ public final class MageEditor {
 	public static final String BLAST_GENOME = "bg";
 	public static final String OPTMAGE_POSITION = "op";
 	public static final String MERLIN_POSITION = "mp";
+	public static final String GENOME = "genome";
+	public static final Object USERID = "id";
 	
 	
     

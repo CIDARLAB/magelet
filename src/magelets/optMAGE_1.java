@@ -24,13 +24,13 @@ public class optMAGE_1 extends Magelet {
     private static final String inputParameterFileName = "INPUTparam.txt";
     private static final String servletFolder ="/optMage_1/";
     private static final String inputTargetFileName = "INPUTtarg.txt"; 
+    private static final String inputGenomeFileName = "genome.fasta"; 
 
     /**
      * @see Magelet#Magelet()
      */
     public optMAGE_1() {
         super();
-        
     }
 
 	/**
@@ -38,20 +38,29 @@ public class optMAGE_1 extends Magelet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		// ENSURE THAT THE SERVER.XML FILE HAS HTTP CONNECTOR SET TO maxPostSize="25097152" or megabytes
+		
 		// Set response type and create an output printer
 		response.setContentType("application/x-www-form-urlencoded");
 		PrintWriter out = response.getWriter();
 
 		// Get Servlet Directory
-		String directory = getDirectory(servletFolder) + "/";
+		String source = getDirectory(servletFolder) + "/master/";
+
 		System.out.println("POST Received");
-		
+		 
 		// Load and validate parameters
 		Map<String,String[]> parameters = load(request);
-				
 		try{
-			if (validate(directory+validHeaders,parameters)) {
+			if (validate(source+validHeaders,parameters)) {
 				
+				// Extract the user ID
+				String user_id = parameters.get("id")[0];
+				String directory = getDirectory(servletFolder)+"/copy"+user_id+"/" ;
+				
+				// Try to make a new folder
+				TextFile.copyDirectory(source, directory );
+				System.out.println("Valid Headers");
 				TextFile.deleteIfPossible(directory+oligoFile);
 				TextFile.deleteIfPossible(directory+dumpFile);
 			    TextFile.deleteIfPossible(directory+inputTargetFileName);
@@ -60,7 +69,8 @@ public class optMAGE_1 extends Magelet {
 				// Generate the inputParameterFile and inputTargetFile and write those to file system
 				generate(directory, inputParameterFileName, MageEditor.PARAMETER, parameters );
 				generate(directory, inputTargetFileName, MageEditor.TARGET, parameters );
-				
+				generate(directory, inputGenomeFileName, MageEditor.GENOME, parameters);
+				System.out.println("Folders Made");
 				// Something related to the genome would go here
 				
 				// Execute the optMAGE script

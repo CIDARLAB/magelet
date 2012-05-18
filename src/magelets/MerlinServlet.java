@@ -49,7 +49,7 @@ public final class MerlinServlet extends Magelet {
 		PrintWriter out = response.getWriter();
 
 		// Get Servlet Directory
-		String directory = getDirectory(servletFolder) + "/";
+
 		System.out.println("POST Received");
 
 		// Load and validate parameters
@@ -57,6 +57,9 @@ public final class MerlinServlet extends Magelet {
 
 		//System.out.println("Start Array = " + parameters.get("start").length);
 
+		String user_id = parameters.get(MageEditor.USERID)[0];
+		String directory = getDirectory(servletFolder)+"/copy"+user_id+"/" ;
+		
 		try{
 			if (validate(directory+validHeaders,parameters)) {
 
