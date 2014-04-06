@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Magelet" default="buildwar">
+	<target name="setup">
+	    <mkdir dir="dist" />
+	    <echo>Copying lib into dist</echo>
+	    <copydir dest="dist/web" src="WebContent" />
+	    <copydir dest="dist/web/WEB-INF/lib" src="${basedir}/lib" />
+	</target>
+	<target name="compile" depends="setup">
+	    <delete dir="dist/web/WEB-INF/classes" />
+	    <mkdir dir="dist/web/WEB-INF/classes" />
+	    <javac destdir="dist/web/WEB-INF/classes" srcdir="src">
+	        <classpath>
+	            <fileset dir="${basedir}/lib">
+	                  <include name="*" />
+	            </fileset>
+	        </classpath>
+	    </javac>
+	    <copy todir="$dist/web/WEB-INF/classes">
+	        <fileset dir="src">
+	            <include name="**/*.properties" />
+	            <include name="**/*.xml" />
+	        </fileset>
+	    </copy>
+	</target>
+	<target name="buildwar" depends="compile">
+	    <war basedir="${basedir}/dist/web" destfile="magelet.war"
+	     webxml="${basedir}/dist/web/WEB-INF/web.xml">
+	        <webinf dir="${basedir}/dist/web/WEB-INF/">
+	            <include name="**/*.jar" />
+	        </webinf>
+	    </war>
+	</target>
+	<target name="deploy" depends="">
+	    <copy file="magelet.war" todir="C:/Program Files/Apache Software Foundation/Tomcat 8.0/webapps" />
+	</target>
+</project>
