@@ -9,7 +9,7 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
+ <!-- <servlet>
     <description></description>
     <display-name>Mage_Test</display-name>
     <servlet-name>Mage_Test</servlet-name>
@@ -18,7 +18,7 @@
   <servlet-mapping>
     <servlet-name>Mage_Test</servlet-name>
     <url-pattern>/Mage_Test</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet>
     <description></description>
     <display-name>optMAGE_1</display-name>
