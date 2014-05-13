@@ -1,0 +1,3 @@
+MAKEBLASTDB /usr/bin/makeblastdb
+BLASTN /usr/bin/blastn
+MFOLD /usr/bin/hybrid-ss-min

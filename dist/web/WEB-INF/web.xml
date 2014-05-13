@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>magelet</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+ <!-- <servlet>
+    <description></description>
+    <display-name>Mage_Test</display-name>
+    <servlet-name>Mage_Test</servlet-name>
+    <servlet-class>magelets.Mage_Test</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Mage_Test</servlet-name>
+    <url-pattern>/Mage_Test</url-pattern>
+  </servlet-mapping> -->
+  <servlet>
+    <description></description>
+    <display-name>optMAGE_1</display-name>
+    <servlet-name>optMAGE_1</servlet-name>
+    <servlet-class>magelets.optMAGE_1</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>optMAGE_1</servlet-name>
+    <url-pattern>/optMAGE_1</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description>Merlin Servlet</description>
+    <display-name>merlin</display-name>
+    <servlet-name>merlin</servlet-name>
+    <servlet-class>magelets.MerlinServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>merlin</servlet-name>
+    <url-pattern>/merlin</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>utils</display-name>
+    <servlet-name>utils</servlet-name>
+    <servlet-class>magelets.Utils</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>utils</servlet-name>
+    <url-pattern>/utils</url-pattern>
+  </servlet-mapping>
+</web-app>

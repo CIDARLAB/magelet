@@ -3,6 +3,7 @@ package magelets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mage.Core.Oligo;
 import mage.Editor.PlotData;
 
 /**
@@ -26,6 +28,8 @@ public final class MerlinServlet extends Magelet {
 	private static final String inputTargetFileName = "INPUTtarg.txt";
 	private static final String genomeFileName = "genome.fasta";   
     private static final String oligoFile = "OUToligos.txt";
+    private static final String mascpcrFile = "MASCPCR.txt";
+    private static final String diversificationFile = "diversification.txt";
 
 
 
@@ -50,7 +54,7 @@ public final class MerlinServlet extends Magelet {
 
 		// Get Servlet Directory
 
-		System.out.println("POST Received");
+		//System.out.println("POST Received");
 
 		// Load and validate parameters
 		Map<String,String[]> parameters = load(request);
@@ -83,6 +87,21 @@ public final class MerlinServlet extends Magelet {
 				
 				// Run the optMage Comparison
 				merlin.compareToOptMage(oligoFile);
+
+			    //generate MASCPCR primer file
+			    //System.out.println("Generating MASCPCR file");
+				try{
+					mage.Tools.OutputTools.generateMASCPCRFile(merlin.pool, directory + mascpcrFile);
+				}
+				catch (IOException e){System.err.println("Failed to write MASCPCR file.");}
+				
+			    //generate diversification trend file
+				//System.out.println("Generating diversification file");
+			    try{
+			    	mage.Tools.OutputTools.generateDiversityTrendTableFile(merlin.pool, 50, directory + diversificationFile);
+			    }
+				catch (IOException e){System.err.println("Failed to write diversification file.");}
+				
 				// Run the genbank generation
 				List<String> gbList = merlin.generateGenbank();
 
@@ -98,12 +117,24 @@ public final class MerlinServlet extends Magelet {
 				// Generate the plot data
 				List<PlotData> plotList= merlin.generatePlotData();
 				addPlots(plotList);
-				
+	    
+			    //generate MerlinOligo file, which is used by the Utils servlet
+			    //System.out.println("Writing MERLIN oligo file");
+			    //try{
+			    //	writeOligoFile(directory, merlin.pool);
+			    //	System.out.println("MERLIN oligo file created");
+			    //}
+			    //catch(IOException e){
+			    //	System.out.println("Failed to create MERLIN oligo file");
+			    //	System.out.println(e.getMessage());
+			    //}
+			    
+			    
 			    // Something about renaming the genome file would go here.
 			    TextFile.delete(directory+inputTargetFileName);
 			    TextFile.delete(directory+inputParameterFileName);
 			    TextFile.delete(directory+oligoFile);
-
+			    
 			    this.result = this.buildURLfromMap();				
 				System.out.println("Response Completed");
 			}
@@ -130,6 +161,27 @@ public final class MerlinServlet extends Magelet {
 		}
 	}
 	
+	/*private void writeOligoFile(String directory, ArrayList<Oligo> pool) throws IOException{
+		StringBuilder stringBuilder = new StringBuilder();
+		String ls = System.getProperty("line.separator");
+		String cs = "\t"; //tab delimited column separator
+		//for (int i = 0; i < names.length; i++){
+		for (Oligo oligo : pool){
+			String name = oligo.name;
+			
+			int merlinStart = oligo.getOptimalPosition();
+			int merlinStop = oligo.getOptimalPosition()+Oligo.ideal_length+1;
+			String seq = oligo.getAsString().substring(merlinStart, merlinStop);
+
+			stringBuilder.append(name);
+			stringBuilder.append(cs);
+			stringBuilder.append(seq);
+			stringBuilder.append(ls);
+		}
+		TextFile.write(directory, "MerlinOligos.txt", stringBuilder.toString());
+	}*/
+
+
 	private void addPlots(List<PlotData> list)
 	{
 		String [] freeEnergy = new String[list.size()];

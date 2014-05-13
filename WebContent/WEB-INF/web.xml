@@ -39,4 +39,14 @@
     <servlet-name>merlin</servlet-name>
     <url-pattern>/merlin</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>utils</display-name>
+    <servlet-name>utils</servlet-name>
+    <servlet-class>magelets.Utils</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>utils</servlet-name>
+    <url-pattern>/utils</url-pattern>
+  </servlet-mapping>
 </web-app>
