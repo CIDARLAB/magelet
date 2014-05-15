@@ -32,7 +32,7 @@ public class Utils extends Magelet{
 	//private static final String inputParameterFileName = "INPUTparam.txt";
 	private static final String servletFolder ="/optMage_1/";
 	//private static final String inputTargetFileName = "INPUTtarg.txt";
-	private static final String genomeFileName = "genome.fasta";   
+	private static final String genomeFile = "genome.fasta";   
     private static final String oligoFile = "OUToligos.txt";
     private static final String mascpcrFile = "MASCPCR.txt";
     private static final String diversificationFile = "diversification.txt";
@@ -111,7 +111,7 @@ public class Utils extends Magelet{
 					//load genome
 					String res = "Genome could not be loaded. Please try running the MERLIN process again.";
 					try{
-						String genome = readFasta(directory+genomeFileName);
+						String genome = readFasta(directory+genomeFile);
 						List<String> resList = mage.Tools.OutputTools.getDSDNAPrimers(genome, seq, left, right);
 						if(!resList.isEmpty()){
 							res = "";
@@ -126,7 +126,14 @@ public class Utils extends Magelet{
 					
 				}
 				else if (type.equals("diversity")){
-					//TODO handle diversity request
+					String user_id = parameters.get("userID")[0];
+					String directory = getDirectory(servletFolder) + "/copy" + user_id + "/";
+					String res = "";
+					try{
+						res = TextFile.read(directory+diversificationFile);
+					}
+					catch (IOException e){}
+					this.result = res.trim();
 				}
 				/*else if (type.equals("oligos")){
 					//System.out.println("generating oligo response");
@@ -203,7 +210,8 @@ public class Utils extends Magelet{
 			return (headers.contains("userID"));
 		}
 		else if (type.equals("diversity")){
-			return (headers.contains("cycles"));
+			//return (headers.contains("cycles"));
+			return true;
 		}
 		else if (type.equals("dsdna")){
 			return (headers.contains("left") && headers.contains("right") && headers.contains("seq"));
