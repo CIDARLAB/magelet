@@ -154,7 +154,7 @@ public final class MerlinServlet extends Magelet {
 
 			// Print to console and return the results
 			out.write(this.result);
-			System.out.println(this.result);
+			//System.out.println(this.result);
 
 			// Close the output Stream.
 			out.close();

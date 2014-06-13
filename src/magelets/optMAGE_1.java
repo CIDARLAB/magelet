@@ -39,6 +39,7 @@ public class optMAGE_1 extends Magelet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// ENSURE THAT THE SERVER.XML FILE HAS HTTP CONNECTOR SET TO maxPostSize="25097152" or megabytes
+			//no longer necessary, but still a good idea- MageEditor will now deliver the genome file in smaller slices
 		
 		// Set response type and create an output printer
 		response.setContentType("application/x-www-form-urlencoded");
@@ -66,16 +67,18 @@ public class optMAGE_1 extends Magelet {
 			    TextFile.deleteIfPossible(directory+inputTargetFileName);
 			    TextFile.deleteIfPossible(directory+inputParameterFileName);
 				
-				// Generate the inputParameterFile and inputTargetFile and write those to file system
-				generate(directory, inputParameterFileName, MageEditor.PARAMETER, parameters );
-				generate(directory, inputTargetFileName, MageEditor.TARGET, parameters );
 				generate(directory, inputGenomeFileName, MageEditor.GENOME, parameters);
-				System.out.println("Folders Made");
+				//System.out.println("Folders Made");
 				// Something related to the genome would go here
 				
 				// Execute the optMAGE script
-				execute(directory, script);
-				
+				if (Boolean.valueOf(parameters.get(MageEditor.RUN)[0])){
+					// Generate the inputParameterFile and inputTargetFile and write those to file system
+					generate(directory, inputParameterFileName, MageEditor.PARAMETER, parameters );
+					generate(directory, inputTargetFileName, MageEditor.TARGET, parameters );
+					
+					execute(directory, script);
+				}
 				// Read the MAGE results;
 			    this.map.put( MageEditor.RESULT, TextFile.getLinesAsArray(directory+oligoFile ));
 			    this.result = this.buildURLfromMap();
@@ -99,7 +102,7 @@ public class optMAGE_1 extends Magelet {
 			
 			// Print to console and return the results
 			out.write(this.result);
-			System.out.println(this.result);
+			//System.out.println(this.result);
 			
 			// Close the output Stream.
 			out.close();

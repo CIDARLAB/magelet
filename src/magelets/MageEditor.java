@@ -7,6 +7,7 @@ public final class MageEditor {
 	public final static String DELIMITER = "x11delimiternewelement11x"; 
     public static final String PARAMETER = "parameters";
     public static final String TARGET = "targets";
+    public static final String RUN = "run";
     public static final String RESULT = "result";
     public static final String ERROR = "error";
     public static final String GENBANK = "genbank";

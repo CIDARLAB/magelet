@@ -78,7 +78,7 @@ public abstract class Magelet extends HttpServlet {
 	 */
 	protected boolean validate(String filePath, Map<String,String[]> parameters) throws IOException{
 		String [] headers = magelets.TextFile.getLinesAsArray(filePath);
-		System.out.println("Required Headers - "+ Arrays.toString(headers));
+		//System.out.println("Required Headers - "+ Arrays.toString(headers));
 		boolean isValid = true;
 
 		for (String ss:  headers){
@@ -88,7 +88,7 @@ public abstract class Magelet extends HttpServlet {
 				}
 				else
 				{
-					System.out.println("Parameter Header Found - "+ss+" - "+parameters.get(ss).length);
+					System.out.println("Parameter Header Found - "+ss+" - "+parameters.get(ss)[0].toString().length());
 				}
 			}
 			else {

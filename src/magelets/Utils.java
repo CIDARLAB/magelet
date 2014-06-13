@@ -51,6 +51,8 @@ public class Utils extends Magelet{
 		// Set response type and create an output printer
 		response.setContentType("text");
 		PrintWriter out = response.getWriter();
+		
+		this.result = "Error performing GET request...";
 
 		// Get Servlet Directory
 
@@ -83,7 +85,7 @@ public class Utils extends Magelet{
 		
 		
 		try{
-			System.out.println("Validating headers");
+			//System.out.println("Validating headers");
 			if (validateheaders(parameters)){
 				//System.out.println("headers validated. Getting requesttype");
 				String type = parameters.get("requesttype")[0];
@@ -112,6 +114,7 @@ public class Utils extends Magelet{
 					String res = "Genome could not be loaded. Please try running the MERLIN process again.";
 					try{
 						String genome = readFasta(directory+genomeFile);
+						this.result = "Error generating dsdna primer for " + seq;
 						List<String> resList = mage.Tools.OutputTools.getDSDNAPrimers(genome, seq, left, right);
 						if(!resList.isEmpty()){
 							res = "";
@@ -120,7 +123,7 @@ public class Utils extends Magelet{
 							}
 						}						
 					}
-					catch (IOException e){}
+					catch (Exception e){System.err.println(e.getMessage());}
 					
 					this.result = res.trim();
 					

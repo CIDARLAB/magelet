@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 /** 
  * @author Samir Ahmed
@@ -44,8 +45,9 @@ public class TextFile{
 	 * @throws IOException
 	 */
 	public static void write(String directory,String fileName, String fileContents) throws IOException{
-		BufferedWriter out = new BufferedWriter(new FileWriter(directory+fileName));
-		out.write(fileContents);
+		FileWriter fw = new FileWriter(directory+fileName,true);
+		BufferedWriter out = new BufferedWriter(fw);
+		out.append(fileContents);
 		out.close();
 	}
 
