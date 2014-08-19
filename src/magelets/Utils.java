@@ -115,6 +115,7 @@ public class Utils extends Magelet{
 					try{
 						String genome = readFasta(directory+genomeFile);
 						this.result = "Error generating dsdna primer for " + seq;
+						//System.err.println("Generating DSDNA primer for insertion sequence " + seq);
 						List<String> resList = mage.Tools.OutputTools.getDSDNAPrimers(genome, seq, left, right);
 						if(!resList.isEmpty()){
 							res = "";
@@ -234,7 +235,7 @@ public class Utils extends Magelet{
 		line = reader.readLine(); //read the first line, do nothing with it
 		while( ( line = reader.readLine() ) != null ) {
 			stringBuilder.append( line );
-			stringBuilder.append( ls );
+			//stringBuilder.append( ls ); //newline broke the DSDNA tool
 		}
 		reader.close();
 		return stringBuilder.toString();

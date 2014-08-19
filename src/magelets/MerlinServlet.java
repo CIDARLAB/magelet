@@ -30,6 +30,7 @@ public final class MerlinServlet extends Magelet {
     private static final String oligoFile = "OUToligos.txt";
     private static final String mascpcrFile = "MASCPCR.txt";
     private static final String diversificationFile = "diversification.txt";
+    private static final String arefile = "are.txt";
 
 
 
@@ -94,6 +95,12 @@ public final class MerlinServlet extends Magelet {
 					mage.Tools.OutputTools.generateMASCPCRFile(merlin.pool, directory + mascpcrFile);
 				}
 				catch (IOException e){System.err.println("Failed to write MASCPCR file.");}
+				
+				//generate ARE file
+				try{
+					mage.Tools.OutputTools.generateAREFile(merlin.pool, directory + arefile);
+				}
+				catch (IOException e){System.err.println("Failed to write ARE file.");}
 				
 			    //generate diversification trend file
 				//System.out.println("Generating diversification file");
