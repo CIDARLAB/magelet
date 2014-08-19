@@ -1,0 +1,7 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+ 
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+  <Set name="maxFormContentSize">2000000000</Set>
+  <Set name="maxFormKeys">2000</Set>
+</Configure>

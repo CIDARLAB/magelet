@@ -1,3 +1,0 @@
-makeblastdb /usr/bin/makeblastdb
-blastn /usr/bin/blastn
-MFOLD /usr/bin/hybrid-ss-min
