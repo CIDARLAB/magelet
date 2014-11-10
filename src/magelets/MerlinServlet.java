@@ -85,7 +85,7 @@ public final class MerlinServlet extends Magelet {
 
 				// Run the optimization
 				merlin.optimize();
-				
+								
 				// Run the optMage Comparison
 				merlin.compareToOptMage(oligoFile);
 
@@ -104,23 +104,30 @@ public final class MerlinServlet extends Magelet {
 				
 			    //generate diversification trend file
 				//System.out.println("Generating diversification file");
-			    try{
+				try{
 			    	mage.Tools.OutputTools.generateDiversityTrendTableFile(merlin.pool, 50, directory + diversificationFile);
 			    }
 				catch (IOException e){System.err.println("Failed to write diversification file.");}
 				
 				// Run the genbank generation
-				List<String> gbList = merlin.generateGenbank();
-
-				String[] genbanks = gbList.toArray( new String[gbList.size()]);
-				
-				List<String> nameList = merlin.generateNames();
-				String[] names = nameList.toArray( new String[nameList.size()]);
-
-				// Add the genbank array to the response
-				map.put(MageEditor.GENBANK, genbanks);
-				map.put(MageEditor.NAMES, names);
-				
+			    try{
+					List<String> gbList = merlin.generateGenbank();
+	
+					String[] genbanks = gbList.toArray( new String[gbList.size()]);
+					//System.err.println(genbanks);
+					List<String> nameList = merlin.generateNames();
+					String[] names = nameList.toArray( new String[nameList.size()]);
+					//System.err.println(names);
+	
+					// Add the genbank array to the response
+					map.put(MageEditor.GENBANK, genbanks);
+					map.put(MageEditor.NAMES, names);
+			    }
+			    catch(Exception e){
+			    	System.err.println("[DEBUG] Error generating Genbank data");
+			    	System.err.println(e.getMessage());
+			    	e.printStackTrace(System.err);
+			    	}
 				// Generate the plot data
 				List<PlotData> plotList= merlin.generatePlotData();
 				addPlots(plotList);
@@ -138,9 +145,9 @@ public final class MerlinServlet extends Magelet {
 			    
 			    
 			    // Something about renaming the genome file would go here.
-			    TextFile.delete(directory+inputTargetFileName);
-			    TextFile.delete(directory+inputParameterFileName);
-			    TextFile.delete(directory+oligoFile);
+				//TextFile.delete(directory+inputTargetFileName);
+			    //TextFile.delete(directory+inputParameterFileName);
+			    //TextFile.delete(directory+oligoFile);
 			    
 			    this.result = this.buildURLfromMap();				
 				System.out.println("Response Completed");

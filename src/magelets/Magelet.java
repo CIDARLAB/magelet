@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.ProcessBuilder.Redirect;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -136,8 +137,11 @@ public abstract class Magelet extends HttpServlet {
 		//ProcessBuilder pb2 = new ProcessBuilder("open",directory);
 		pb.directory(new File(directory));
 
+		pb.redirectError(Redirect.to(new File(directory + "OptMageERR.txt")));
+		
 		Process p = pb.start();
 		p.waitFor();
+		
 		//pb2.start();
 		System.out.println("Mage Calculation Completed  ... ");
 

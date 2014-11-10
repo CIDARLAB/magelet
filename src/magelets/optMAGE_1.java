@@ -93,9 +93,20 @@ public class optMAGE_1 extends Magelet {
 			//else { this.result = "Invalid Request Parameters"; }
 		}
 		catch (Exception EE){ 
+			StringBuilder err = new StringBuilder(EE.toString());
+			//get the error stream from a failed OptMage script run
+			try{
+				String user_id = parameters.get("id")[0];
+				String directory = getDirectory(servletFolder)+"/copy"+user_id+"/" ;
+				for (String line : TextFile.getLinesAsArray(directory+"OptMageERR.txt")){
+					err.append("\n" + line);
+				}
+			}
+			catch(IOException e){};
+									
 			EE.printStackTrace();
 			this.map.remove(MageEditor.ERROR);
-			this.map.put(MageEditor.ERROR, new String[] {EE.toString()});
+			this.map.put(MageEditor.ERROR, new String[] {err.toString()});
 			this.result = this.buildURLfromMap();
 		}
 		finally{
