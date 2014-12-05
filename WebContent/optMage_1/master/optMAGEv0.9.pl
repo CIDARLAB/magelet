@@ -57,11 +57,11 @@
             push(@rep,"1") if (($5-$4)/2+$4 < $dif[0] || ($5-$4)/2+$4 > $OriC[1]);
             push(@rep,"2") if (($5-$4)/2+$4 > $dif[1] && ($5-$4)/2+$4 < $OriC[0]);
         }
-        push(@start,"$4");
-        push(@end,"$5");
+        push(@start,"$4"-1);##hack to make the indexes inclusive
+        push(@end,"$5"+1);##also to go from exclusive to inclusive
         push(@mut,"$6");
         push(@mutseq,"$7");
-        if ($4>=$5) { die "Error! ID: $1 - start coord ($4) is great than end coord ($5)"; }
+        if ($4>$5) { die "Error! ID: $1 - start coord ($4) is greater than end coord ($5)"; }
         if (length($7)/2 > ($oligosize/2-$mloc_max))  { die "Error! ID: $1 - mutation length for $$7 exceeds mloc_max ($mloc_max) constraint"; }
     }
  }
